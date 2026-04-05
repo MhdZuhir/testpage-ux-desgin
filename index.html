@@ -1,10 +1,217 @@
 <!doctype html>
 <html lang="en">
 <head>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Forma — Desk Accessories Built for Deep Work</title>
   <style>
+    @media (max-width: 900px){
+
+    }
+    /* ── UX Challenge ── */
+.challenge-wrap {
+  padding: 18px 0 8px;
+}
+
+.challenge-box {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  color: #fff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: var(--sh-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.challenge-box::after {
+  content: "";
+  position: absolute;
+  inset: auto -40px -40px auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.14), rgba(255,255,255,0));
+}
+
+.challenge-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.challenge-title {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.challenge-sub {
+  color: rgba(255,255,255,.72);
+  max-width: 680px;
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.challenge-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.challenge-progress-meta {
+  min-width: 180px;
+  text-align: right;
+}
+
+.challenge-progress-label {
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 8px;
+}
+
+.challenge-progress-bar {
+  width: 220px;
+  max-width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.14);
+  overflow: hidden;
+  margin-left: auto;
+}
+
+.challenge-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #60a5fa, #34d399);
+  border-radius: 999px;
+  transition: width .3s ease;
+}
+
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.task-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.task-level {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #93c5fd;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.task-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.task-card p {
+  font-size: 13px;
+  color: rgba(255,255,255,.72);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  color: #fff;
+}
+
+.task-item .dot {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  margin-top: 1px;
+}
+
+.task-item.done .dot {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.task-item.done .dot::before {
+  content: "✓";
+}
+
+.task-item.done .task-text {
+  color: #bbf7d0;
+}
+
+.challenge-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.challenge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.1);
+  color: #fff;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 13px;
+}
+
+.challenge-note {
+  margin-top: 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,.58);
+}
+
+@media (max-width: 900px) {
+  .challenge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .challenge-progress-meta {
+    text-align: left;
+  }
+
+  .challenge-progress-bar {
+    margin-left: 0;
+  }
+}
     /* ── Tokens ── */
     :root {
       --bg:      #f7f5f0;
@@ -488,6 +695,90 @@
     </div>
   </div>
 </nav>
+<div class="wrap challenge-wrap" id="challenge">
+  <div class="challenge-box">
+    <div class="challenge-top">
+      <div>
+        <div class="challenge-kicker">UX Challenge · test mode</div>
+        <div class="challenge-title">Testa sidan som ett spel</div>
+        <p class="challenge-sub">
+          Gör uppgifterna nedan som om du verkligen funderade på att köpa något.
+          Målet är att hitta vad som känns tydligt, förvirrande eller frustrerande.
+        </p>
+      </div>
+
+      <div class="challenge-progress-meta">
+        <div class="challenge-progress-label">
+          <span id="taskCountText">0 / 6 tasks completed</span>
+        </div>
+        <div class="challenge-progress-bar">
+          <div class="challenge-progress-fill" id="taskProgressFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="challenge-grid">
+      <div class="task-card">
+        <div class="task-level">Level 1</div>
+        <h3>Explore</h3>
+        <p>Kom igång och förstå sidan.</p>
+        <div class="task-list">
+          <div class="task-item" id="task-products">
+            <span class="dot"></span>
+            <span class="task-text">Open the product section</span>
+          </div>
+          <div class="task-item" id="task-faq">
+            <span class="dot"></span>
+            <span class="task-text">Find a shipping answer in FAQ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-level">Level 2</div>
+        <h3>Shop</h3>
+        <p>Gör riktiga produktuppgifter.</p>
+        <div class="task-list">
+          <div class="task-item" id="task-cart">
+            <span class="dot"></span>
+            <span class="task-text">Add one item to cart</span>
+          </div>
+          <div class="task-item" id="task-modal">
+            <span class="dot"></span>
+            <span class="task-text">Open any modal</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-level">Level 3</div>
+        <h3>React</h3>
+        <p>Lämna riktig respons på upplevelsen.</p>
+        <div class="task-list">
+          <div class="task-item" id="task-newsletter">
+            <span class="dot"></span>
+            <span class="task-text">Subscribe to the newsletter</span>
+          </div>
+          <div class="task-item" id="task-feedback">
+            <span class="dot"></span>
+            <span class="task-text">Submit feedback at the bottom</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="challenge-actions">
+      <button class="btn btn-primary" onclick="smoothTo('products')">Start Challenge</button>
+      <button class="btn btn-secondary" onclick="resetTasks()">Reset Progress</button>
+      <span class="challenge-chip">Heatmap-ready clicks</span>
+      <span class="challenge-chip">Feedback + frustration test</span>
+    </div>
+
+    <div class="challenge-note">
+      Tip: don’t overthink it — click around naturally and stop wherever something feels odd.
+    </div>
+  </div>
+</div>
 
 <!-- Hero -->
 <section>
@@ -1219,6 +1510,126 @@
       ok ? '✓ Feedback received — thank you!' : '⚠ Could not submit. Please try again.';
     if (ok) e.target.reset();
   }
+  /* ── UX Challenge tasks ── */
+const TASK_IDS = [
+  'task-products',
+  'task-faq',
+  'task-cart',
+  'task-modal',
+  'task-newsletter',
+  'task-feedback'
+];
+
+const taskState = {
+  'task-products': false,
+  'task-faq': false,
+  'task-cart': false,
+  'task-modal': false,
+  'task-newsletter': false,
+  'task-feedback': false
+};
+
+function markTaskDone(id) {
+  if (!taskState[id]) {
+    taskState[id] = true;
+    const el = document.getElementById(id);
+    if (el) el.classList.add('done');
+    updateTaskProgress();
+
+    if (typeof track === 'function') {
+      track('challenge_task_complete', { task_id: id });
+    }
+  }
+}
+
+function updateTaskProgress() {
+  const done = TASK_IDS.filter(id => taskState[id]).length;
+  const pct = Math.round((done / TASK_IDS.length) * 100);
+
+  const fill = document.getElementById('taskProgressFill');
+  const text = document.getElementById('taskCountText');
+
+  if (fill) fill.style.width = pct + '%';
+  if (text) text.textContent = `${done} / ${TASK_IDS.length} tasks completed`;
+
+  if (done === TASK_IDS.length && typeof showToast === 'function') {
+    showToast('🏆 Challenge complete — thank you!');
+  }
+}
+
+function resetTasks() {
+  TASK_IDS.forEach(id => {
+    taskState[id] = false;
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('done');
+  });
+  updateTaskProgress();
+
+  if (typeof showToast === 'function') {
+    showToast('Progress reset');
+  }
+}
+
+/* Mark product task when products section becomes visible */
+document.addEventListener('DOMContentLoaded', function () {
+  updateTaskProgress();
+
+  const productsSection = document.getElementById('products');
+  if (productsSection && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          markTaskDone('task-products');
+        }
+      });
+    }, { threshold: 0.25 });
+
+    obs.observe(productsSection);
+  }
+
+  const newsletterForm = document.getElementById('newsletterForm');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function () {
+      setTimeout(() => {
+        markTaskDone('task-newsletter');
+      }, 300);
+    });
+  }
+
+  const feedbackForm = document.getElementById('feedbackForm');
+  if (feedbackForm) {
+    feedbackForm.addEventListener('submit', function () {
+      setTimeout(() => {
+        markTaskDone('task-feedback');
+      }, 300);
+    });
+  }
+
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', function () {
+      setTimeout(() => {
+        markTaskDone('task-faq');
+      }, 100);
+    });
+  });
+});
+
+/* Wrap existing functions safely */
+if (typeof addToCart === 'function') {
+  const originalAddToCart = addToCart;
+  addToCart = function(name, price) {
+    originalAddToCart(name, price);
+    markTaskDone('task-cart');
+  };
+}
+
+if (typeof showModal === 'function') {
+  const originalShowModal = showModal;
+  showModal = function(id) {
+    originalShowModal(id);
+    markTaskDone('task-modal');
+  };
+}
 
 </script>
 </body>
