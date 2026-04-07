@@ -1483,6 +1483,7 @@
 
   // Newsletter
   function submitNewsletter(e) {
+     sendEvent("form_submit", { form_id: "newsletterForm" });
     e.preventDefault();
     const email = e.target.email.value;
     track('newsletter_signup', { email_domain: email.split('@')[1] || 'unknown' });
@@ -1492,6 +1493,7 @@
 
   // Feedback form
   async function submitFeedback(e) {
+    sendEvent("form_submit", { form_id: "feedbackForm" }); 
     e.preventDefault();
     const rating = Number(document.getElementById('f-rating').value || 0);
     const text   = document.getElementById('f-text').value.trim();
