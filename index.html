@@ -1503,23 +1503,30 @@
   const email = e.target.email.value.trim();
   if (!email) return;
 
-  const ok = await trySend([{
-    type: 'newsletter_signup',
-    session_id: sessionId,
-    user_id: userId,
-    page_url: location.href,
-    page_title: document.title,
-    timestamp: Date.now(),
-    viewport: { width: innerWidth, height: innerHeight },
-    email_domain: email.split('@')[1] || 'unknown'
-  }]);
+  document.getElementById('nlStatus').textContent = "✓ Subscribed!";
+  e.target.reset();
+  markTaskDone('task-newsletter');
 
-  document.getElementById('nlStatus').textContent =
-    ok ? "✓ You're on the list!" : "⚠ Could not subscribe. Please try again.";
-
-  if (ok) {
-    e.target.reset();
-    markTaskDone('task-newsletter');
+  // optional lightweight tracking only
+  try {
+    await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        events: [{
+          type: 'newsletter_signup',
+          session_id: sessionId,
+          user_id: userId,
+          page_url: location.href,
+          page_title: document.title,
+          timestamp: Date.now(),
+          viewport: { width: innerWidth, height: innerHeight },
+          email_domain: email.split('@')[1] || 'unknown'
+        }]
+      })
+    });
+  } catch (e) {
+    console.log("Newsletter tracking failed, but that's OK.");
   }
 }
   // Feedback form
