@@ -1492,28 +1492,30 @@
   }
 
   // Feedback form
-  async function submitFeedback(e) {
-    sendEvent("form_submit", { form_id: "feedbackForm" }); 
-    e.preventDefault();
-    const rating = Number(document.getElementById('f-rating').value || 0);
-    const text   = document.getElementById('f-text').value.trim();
-    const name   = document.getElementById('f-name').value.trim();
+ function submitFeedback(e) {
+  e.preventDefault(); 
 
-    const ok = await trySend([Object.assign({
-      type: 'feedback', session_id: sessionId, user_id: userId,
-      page_url: location.href, page_title: document.title,
-      timestamp: Date.now(), viewport: { width: innerWidth, height: innerHeight }
-    }, {
-      rating: rating || null,
-      feedback_text: name ? '[' + name + '] ' + text : text,
-      time_on_page_ms: Date.now() - pageStart,
-      max_scroll_pct: maxScroll,
-    })]);
+  const form = document.getElementById("feedbackForm");
 
-    document.getElementById('formStatus').textContent =
-      ok ? '✓ Feedback received — thank you!' : '⚠ Could not submit. Please try again.';
-    if (ok) e.target.reset();
-  }
+  const data = {
+    name: form.name.value,
+    rating: form.rating.value,
+    feedbackText: form.feedbackText.value
+  };
+
+  fetch("https://cod-ux.onrender.com/api/events", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      event_type: "feedback",
+      payload: data
+    })
+  });
+
+  document.getElementById("formStatus").textContent = "Submitted!";
+}
   /* ── UX Challenge tasks ── */
 const TASK_IDS = [
   'task-products',
