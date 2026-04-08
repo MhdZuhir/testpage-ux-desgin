@@ -1266,16 +1266,31 @@
   }
 
   let sending = false;
-  async function trySend(events) {
-    try {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ events })
-      });
-      return res.ok;
-    } catch (e) { return false; }
+ async function trySend(events) {
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ events })
+    });
+
+    if (!res.ok) return false;
+
+    const json = await res.json();
+    console.log("API response:", json);
+
+    // For feedback submits, require actual feedback_saved > 0
+    const hasFeedback = events.some(ev => ev.type === 'feedback');
+    if (hasFeedback) {
+      return (json.feedback_saved || 0) > 0;
+    }
+
+    return (json.saved || 0) > 0;
+  } catch (e) {
+    console.error("Send failed:", e);
+    return false;
   }
+}
 
   async function flushPending() {
     if (sending) return;
@@ -1508,29 +1523,43 @@
   }
 }
   // Feedback form
- function submitFeedback(e) {
-  e.preventDefault(); 
+async function submitFeedback(e) {
+  e.preventDefault();
 
-  const form = document.getElementById("feedbackForm");
+  const rating = Number(document.getElementById('f-rating').value || 0);
+  const text   = document.getElementById('f-text').value.trim();
+  const name   = document.getElementById('f-name').value.trim();
 
-  const data = {
-    name: form.name.value,
-    rating: form.rating.value,
-    feedbackText: form.feedbackText.value
+  if (!rating && !text) {
+    document.getElementById('formStatus').textContent = '⚠ Please add a rating or a comment.';
+    return;
+  }
+
+  const payload = {
+    type: 'feedback',
+    session_id: sessionId,
+    user_id: userId,
+    page_url: location.href,
+    page_title: document.title,
+    timestamp: Date.now(),
+    viewport: { width: innerWidth, height: innerHeight },
+    rating: rating || null,
+    feedback_text: name ? '[' + name + '] ' + text : text,
+    time_on_page_ms: Date.now() - pageStart,
+    max_scroll_pct: maxScroll
   };
 
-  fetch("https://cod-ux.onrender.com/api/events", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      event_type: "feedback",
-      payload: data
-    })
-  });
+  console.log("Sending feedback payload:", payload);
 
-  document.getElementById("formStatus").textContent = "Submitted!";
+  const ok = await trySend([payload]);
+
+  document.getElementById('formStatus').textContent =
+    ok ? '✓ Feedback received — thank you!' : '⚠ Feedback was not saved. Please try again.';
+
+  if (ok) {
+    e.target.reset();
+    markTaskDone('task-feedback');
+  }
 }
   /* ── UX Challenge tasks ── */
 const TASK_IDS = [
