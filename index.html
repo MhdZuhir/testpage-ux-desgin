@@ -1482,15 +1482,31 @@
   }
 
   // Newsletter
-  function submitNewsletter(e) {
-     sendEvent("form_submit", { form_id: "newsletterForm" });
-    e.preventDefault();
-    const email = e.target.email.value;
-    track('newsletter_signup', { email_domain: email.split('@')[1] || 'unknown' });
-    document.getElementById('nlStatus').textContent = '✓ You\'re on the list!';
-    e.target.reset();
-  }
+ async function submitNewsletter(e) {
+  e.preventDefault();
 
+  const email = e.target.email.value.trim();
+  if (!email) return;
+
+  const ok = await trySend([{
+    type: 'newsletter_signup',
+    session_id: sessionId,
+    user_id: userId,
+    page_url: location.href,
+    page_title: document.title,
+    timestamp: Date.now(),
+    viewport: { width: innerWidth, height: innerHeight },
+    email_domain: email.split('@')[1] || 'unknown'
+  }]);
+
+  document.getElementById('nlStatus').textContent =
+    ok ? "✓ You're on the list!" : "⚠ Could not subscribe. Please try again.";
+
+  if (ok) {
+    e.target.reset();
+    markTaskDone('task-newsletter');
+  }
+}
   // Feedback form
  function submitFeedback(e) {
   e.preventDefault(); 
